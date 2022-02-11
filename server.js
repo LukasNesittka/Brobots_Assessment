@@ -29,6 +29,7 @@ app.get('/styles', (req,res) => {
 
 app.get('/api/robots', (req, res) => {
     const botsArr = bots
+    rollbar.log('Somebody is trying to get the robots!')
     try {
         res.status(200).send(botsArr)
     } catch (error) {
@@ -38,12 +39,14 @@ app.get('/api/robots', (req, res) => {
 })
 
 app.get('/api/robots/five', (req, res) => {
+    rollbar.log('A list of robots has been requested.')
     try {
         let shuffled = shuffleArray(bots)
         let choices = shuffled.slice(0, 5)
         let compDuo = shuffled.slice(6, 8)
         res.status(200).send({choices, compDuo})
     } catch (error) {
+        rollbar.log(error)
         console.log('ERROR GETTING FIVE BOTS', error)
         res.sendStatus(400)
     }
